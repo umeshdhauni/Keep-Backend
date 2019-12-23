@@ -4,6 +4,11 @@ const findUser = async (data) =>{
     return User.findOne(data);
 }
 
+const createUser = async (data) =>{
+    return User.create(data);
+}
+
 module.exports ={
-    findUser
+    findUser,
+    createUser
 }
