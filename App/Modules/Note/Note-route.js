@@ -3,13 +3,13 @@ const router = express.Router();
 const { catchErrors } = require('../../Handlers/ErrorHandler');
 const { createNote,getNotes,updateNote,deleteNote } = require('./Note-controller')
 
-router.post('/create', catchErrors(createNote));
+router.post('/create', authenticate, catchErrors(createNote));
 
-router.get('/', catchErrors(getNotes));
+router.get('/', authenticate, catchErrors(getNotes));
 
-router.patch('/update/:_id', catchErrors(updateNote));
+router.patch('/update/:_id', authenticate, catchErrors(updateNote));
 
-router.delete('/delete/:_id', catchErrors(deleteNote));
+router.delete('/delete/:_id', authenticate, catchErrors(deleteNote));
 
 
 module.exports = router;

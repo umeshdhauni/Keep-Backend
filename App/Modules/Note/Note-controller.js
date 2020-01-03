@@ -8,6 +8,8 @@ const createNote = async (req, res) => {
     if(badRequest(['note','user','type'],data)){
         return BadRequest(res,'Missing Data');
     }
+
+    data.user = req.user._id;
     let record = await create(data);
     return Created(res, 'Note is created successfully', record);
 }
