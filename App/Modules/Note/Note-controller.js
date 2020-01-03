@@ -1,6 +1,6 @@
 const {  findNoteById,create,findAllNotes,updateOne,deleteById } = require('../../Services/Note/Note-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
-const { BadRequest, Unauthorized, Conflic,NotFound } = require('../../Helpers/Response/ClientErrors');
+const { BadRequest,NotFound } = require('../../Helpers/Response/ClientErrors');
 const { badRequest } = require('../../Helpers/Data-Format/Format')
 
 const createNote = async (req, res) => {
