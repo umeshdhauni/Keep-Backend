@@ -1,14 +1,14 @@
-const {  findNoteById,create,findAllNotes,updateOne,deleteById } = require('../../Services/Note/Note-service');
+const {  findNoteById,create,findAllNotes,updateOne,deleteById,addRemoveTrash,noteDone } = require('../../Services/Note/Note-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
 const { BadRequest,NotFound } = require('../../Helpers/Response/ClientErrors');
 const { badRequest } = require('../../Helpers/Data-Format/Format')
 
 const createNote = async (req, res) => {
     let data = { ...req.body };
-    if(badRequest(['note','user','type'],data)){
+    if(badRequest(['note','title'],data)){
         return BadRequest(res,'Missing Data');
     }
-
+    // console.log(req.user)
     data.user = req.user._id;
     let record = await create(data);
     return Created(res, 'Note is created successfully', record);
@@ -35,7 +35,7 @@ const updateNote = async (req, res) => {
 
 
 const deleteNote = async (req, res) => {
-    let data = { ...req.body };
+    let data = { ...req.params };
     
     let note = await findNoteById(data._id);
     if(!note){
@@ -46,5 +46,30 @@ const deleteNote = async (req, res) => {
     return Success(res, 'Note is deleted successfully', null);
 }
 
+const trash = async (req, res) => {
+    let data = { ...req.params,...req.body };
+    
+    let note = await findNoteById(data._id);
+    if(!note){
+        return NotFound(res,'Note not found');
+    }
 
-module.exports = { createNote, getNotes,updateNote, deleteNote }
+    await addRemoveTrash(data._id,data.trash);
+    return Success(res, 'Note is deleted successfully', null);
+}
+
+
+const checklist = async (req, res) => {
+    let data = { ...req.params,...req.body };
+    
+    let note = await findNoteById(data._id);
+    if(!note){
+        return NotFound(res,'Note not found');
+    }
+
+    await noteDone(note,data);
+    return Success(res, 'Checklist is changed successfully', null);
+}
+
+
+module.exports = { createNote, getNotes,updateNote, deleteNote,trash,checklist }

@@ -20,10 +20,25 @@ const deleteById = async (data) =>{
     return Note.findByIdAndDelete(data._id);
 }
 
+const addRemoveTrash = async (id,val) =>{
+    return Note.updateOne({_id:id},{trash:val});
+}
+
+const noteDone = async (note,data) =>{
+    let checklist = note.checklists;
+    let index = checklist.findIndex(element =>{
+        return element.index == data.index;
+    });
+    checklist[index].done = data.done;
+    return Note.updateOne({_id:note._id},{checklists:checklist});
+}
+
 module.exports ={
     create,
     findAllNotes,
     updateOne,
     deleteById,
-    findNoteById
+    findNoteById,
+    addRemoveTrash,
+    noteDone
 }

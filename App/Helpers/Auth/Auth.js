@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { signOptions, verifyOptions } = require('../../Constants/KeyOptions');
+const fs = require('fs');
+const path  = require('path')
 
 const hashPassword = async function (password) {
     const hashedPassword = await new Promise((resolve, reject) => {
@@ -31,12 +33,12 @@ const generateToken = (data) => {
         id: data._id,
         email:data.email,
         date:new Date()
-    }, '2387JHKJH&^&&^%', signOptions);
+    },'osdfhao$H$OHO$iohoiah$$$lfgiuadsf%hiohfh');
 }
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, '2387JHKJH&^&&^%', verifyOptions);
+        return jwt.verify(token, 'osdfhao$H$OHO$iohoiah$$$lfgiuadsf%hiohfh');
     } catch (error) {
         return false;
     }

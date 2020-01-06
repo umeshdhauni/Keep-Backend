@@ -15,6 +15,10 @@ app.use(cookieParser());
 const userRoutes = require('./App/Modules/User/User-route');
 app.use('/api/user', userRoutes);
 
+//note routes
+
+const noteRoutes = require('./App/Modules/Note/Note-route');
+app.use('/api/note', noteRoutes);
 
 app.use('/', (req,res,next) =>{
     res.status(200).json({

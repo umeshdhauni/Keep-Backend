@@ -6,17 +6,17 @@ const noteSchema = new mongoose.Schema({
         trim: true
     },
     note: {
-        required: true,
         type: String,
     },
-    type: {
-        required: true,
-        type: String,
-    },
+    // type: {
+    //     required: true,
+    //     type: String,
+    // },
     checklists: [
         {
             name:String,
-            done:Boolean
+            done:Boolean,
+            index:Number
         },
     ],
     image: {
