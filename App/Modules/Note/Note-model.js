@@ -14,9 +14,9 @@ const noteSchema = new mongoose.Schema({
     // },
     checklists: [
         {
-            name:String,
-            done:Boolean,
-            index:Number
+            name: String,
+            done: Boolean,
+            index: Number
         },
     ],
     image: {
@@ -30,29 +30,30 @@ const noteSchema = new mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Users',
-        required:true
+        required: true
     },
-    assignees:[
+    assignees: [
         {
-           user:{
-            type: mongoose.Schema.Types.ObjectId, ref: 'Users', 
-           },
-           permission:{
-               type:String
-           }
+            user: {
+                type: mongoose.Schema.Types.ObjectId, ref: 'Users',
+            },
+            permission: {
+                type: String
+            },
+            accepted: Boolean
         }
     ],
-    trash:{
-        type:Boolean,
-        default:false
+    trash: {
+        type: Boolean,
+        default: false
     },
-    dueDate:{
-        type:Date
+    dueDate: {
+        type: Date
     },
-    label:{
-        type:String
-    }
+    label: {
+        type: String
+    },
 
-},{timestamps:true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Notes', noteSchema);

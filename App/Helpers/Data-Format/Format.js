@@ -1,5 +1,5 @@
 
-const badRequest = (keys,data) =>{
+const isBadRequest = (keys,data) =>{
     for(let key of keys){
         let index = Object.keys(data).indexOf(key);
         if(index < 0){
@@ -11,5 +11,5 @@ const badRequest = (keys,data) =>{
 }
 
 module.exports ={
-    badRequest
+    isBadRequest
 }

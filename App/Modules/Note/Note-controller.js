@@ -1,19 +1,24 @@
 const {  findNoteById,create,findAllNotes,updateOne,deleteById,addRemoveTrash,noteDone } = require('../../Services/Note/Note-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
 const { BadRequest,NotFound } = require('../../Helpers/Response/ClientErrors');
-const { badRequest } = require('../../Helpers/Data-Format/Format');
+const { isBadRequest } = require('../../Helpers/Data-Format/Format');
 
 const {fileUpload} = require('../../Helpers/Aws/file-upload')
 
 const createNote = async (req, res) => {
     let data = { ...req.body };
-    if(badRequest(['title'],data)){
+    let imageFile = req.file;
+    if(isBadRequest(['title'],data)){
         return BadRequest(res,'Missing Data');
     }
 
-    let isUpload = await fileUpload(req.file);
-    console.log(isUpload)
-    data.image = isUpload.Location;
+    if(imageFile){
+        let isUpload = await fileUpload(imageFile);
+        data.image = isUpload.Location;
+    }
+    if(data.checklists){
+        data.checklists = JSON.parse(data.checklists)
+    }
     data.user = req.user._id;
     let record = await create(data);
     return Created(res, 'Note is created successfully', record);
@@ -21,7 +26,7 @@ const createNote = async (req, res) => {
 
 const getNotes = async (req, res) => {
     let data = { ...req.query };
-    
+    data.user = req.user._id;
     let notes = await findAllNotes(data);
     return Success(res,'All notes',notes);
 }

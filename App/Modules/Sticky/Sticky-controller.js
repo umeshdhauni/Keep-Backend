@@ -1,11 +1,11 @@
 const { create, findAllNotes,updateNote,deleteById,findNoteById } = require('../../Services/Sticky/Sticky-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
 const { BadRequest, Unauthorized, Conflict } = require('../../Helpers/Response/ClientErrors');
-const { badRequest } = require('../../Helpers/Data-Format/Format')
+const { isBadRequest } = require('../../Helpers/Data-Format/Format')
 
 const createNote = async (req, res) => {
     let data = { ...req.body };
-    if (badRequest(['note', 'user'], data)) {
+    if (isBadRequest(['note', 'user'], data)) {
         return BadRequest(res, 'Missing Data');
     }
     let record = await create(data);

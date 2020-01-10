@@ -23,11 +23,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    refreshToken:{
-        type:String,
+    refreshToken: {
+        type: String,
         // required:true
-    }
+    },
+    labels: {
+        type: Array,
+        default:['#c5fdd9','#ffc','#ccf','#fcc']
+      }
 
-},{timestamps:true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Users', userSchema);

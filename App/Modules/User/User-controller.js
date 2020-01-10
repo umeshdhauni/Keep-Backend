@@ -1,12 +1,12 @@
-const { findUser, createUser } = require('../../Services/User/User-service');
+const { findUser, createUser,addLabel } = require('../../Services/User/User-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
 const { BadRequest, Unauthorized, Conflict } = require('../../Helpers/Response/ClientErrors');
 const { hashPassword,verifyPassword,generateToken } = require('../../Helpers/Auth/Auth');
-const { badRequest } = require('../../Helpers/Data-Format/Format')
+const { isBadRequest } = require('../../Helpers/Data-Format/Format')
 
 const login = async (req, res) => {
     let data = { ...req.body };
-    if(badRequest(['email','password'],data)){
+    if(isBadRequest(['email','password'],data)){
         return BadRequest(res,'Missing Data');
     }
     let user = await findUser({ email: data.email });
@@ -42,4 +42,20 @@ const signup = async (req, res) => {
 
 }
 
-module.exports = { login, signup }
+const getUser = async (req,res) =>{
+    let record = await findUser({_id:req.user._id});
+    return Success(res, "User information", record);
+
+}
+
+const updateLabel = async (req,res) =>{
+    let data = {...req.body}
+    data.user = req.user._id;
+    let record = await findUser({_id:req.user._id});
+    if(record){
+       await addLabel(data.label,record._id); 
+       return Success(res, "Label information", {label:data.label});
+    }
+}
+
+module.exports = { login, signup,getUser, updateLabel }
