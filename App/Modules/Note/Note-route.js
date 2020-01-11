@@ -20,11 +20,11 @@ var upload = multer({
 // .array("image", 3);            ---Field name and max count
 .single('image')
 
-router.post('/create', authenticate, upload , catchErrors(createNote));
+router.post('/create', authenticate, upload, catchErrors(createNote));
 
 router.get('/', authenticate, catchErrors(getNotes));
 
-router.patch('/update/:_id', authenticate, catchErrors(updateNote));
+router.patch('/update/:_id', authenticate, upload, catchErrors(updateNote));
 
 router.delete('/delete/:_id', authenticate, catchErrors(deleteNote));
 

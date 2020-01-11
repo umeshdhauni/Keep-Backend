@@ -33,12 +33,21 @@ const getNotes = async (req, res) => {
 
 const updateNote = async (req, res) => {
     let data = { ...req.body,...req.params };
-
+    let imageFile = req.file;
+    if(imageFile){
+        let isUpload = await fileUpload(imageFile);
+        data.image = isUpload.Location;
+    }
     let note = await findNoteById(data._id);
     if(!note){
         return NotFound(res,'Note not found');
     }
-
+    if(data.checklists){
+        data.checklists = JSON.parse(data.checklists)
+    }
+    if(data.dueDate){
+        data.dueDate = JSON.parse(data.dueDate)
+    }
     let record = await updateOne(data);
     return Success(res, 'Note is updated successfully', record);
 }

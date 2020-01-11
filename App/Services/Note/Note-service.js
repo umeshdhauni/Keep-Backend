@@ -13,7 +13,8 @@ const findNoteById = async (id) =>{
 }
 
 const updateOne = async (data) =>{
-    return Note.updateOne({_id:data._id},data);
+    console.log(data)
+    return Note.findOneAndUpdate({_id:data._id},data);
 }
 
 const deleteById = async (data) =>{
