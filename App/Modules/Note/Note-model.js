@@ -38,7 +38,7 @@ const noteSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId, ref: 'Users',
             },
             permission: {
-                type: String
+                type: Array
             },
             accepted: Boolean
         }

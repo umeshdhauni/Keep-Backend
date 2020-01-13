@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
     let data = { ...req.body };
-    if(badRequest(['name','email','phone','password'],data)){
+    if(isBadRequest(['name','email','phone','password'],data)){
         return BadRequest(res,'Missing Data');
     }
     let user = await findUser({ email: data.email });
@@ -48,6 +48,18 @@ const getUser = async (req,res) =>{
 
 }
 
+const getUserByMail = async (req,res) =>{
+    let data = {...req.query};
+    let currentUser = await findUser({_id:req.user._id});
+    let record = [];
+    if(currentUser.email != data.email){
+        record = await findUser({email:data.email});
+        record = [record];
+    }
+    return Success(res, "User information", record);
+
+}
+
 const updateLabel = async (req,res) =>{
     let data = {...req.body}
     data.user = req.user._id;
@@ -58,4 +70,4 @@ const updateLabel = async (req,res) =>{
     }
 }
 
-module.exports = { login, signup,getUser, updateLabel }
+module.exports = { login, signup,getUser, updateLabel,getUserByMail }

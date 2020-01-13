@@ -5,7 +5,7 @@ const create = async (data) =>{
 }
 
 const findAllNotes = async (data) =>{
-    return Note.find(data);
+    return Note.find(data).populate('assignees.user')
 }
 
 const findNoteById = async (id) =>{

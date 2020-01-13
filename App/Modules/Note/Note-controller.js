@@ -42,11 +42,10 @@ const updateNote = async (req, res) => {
     if(!note){
         return NotFound(res,'Note not found');
     }
-    if(data.checklists){
-        data.checklists = JSON.parse(data.checklists)
-    }
-    if(data.dueDate){
-        data.dueDate = JSON.parse(data.dueDate)
+    for(let key of Object.keys(data)){
+        if(key == 'checklists' || key == 'dueDate' || key == 'assignees'){
+            data[key] = JSON.parse(data[key]);
+        }
     }
     let record = await updateOne(data);
     return Success(res, 'Note is updated successfully', record);
