@@ -1,30 +1,48 @@
-const Sticky = require('../../Modules/Sticky/Sticky-model');
+const Reminder = require('../../Modules/Reminder/Reminder-model');
 
-const create = async (data) =>{
-    return Sticky.create(data);
+const create = (data) => {
+    return Reminder.create(data);
 }
 
-const findAllNotes = async (data) =>{
-    return Sticky.find(data);
+const findAllReminders = (data) => {
+    return Reminder.aggregate([
+        {
+            $match:{user:data.user}
+        },
+        {
+            $group: {
+                _id: '$date',
+                reminders: {$push: '$$ROOT'}
+            }
+        }, 
+        {
+            $project: {
+                date: '$_id',
+                _id: 0,
+                reminders: 1,
+            }
+        }
+        
+    ])
 }
 
-const findNoteById = async (id) =>{
-    return Sticky.findById(id);
+const findReminderById =  (id) => {
+    return Reminder.findById(id);
 }
 
-const updateOne = async (data) =>{
-    return Sticky.updateOne({_id:data._id},data);
+const updateOne = (data) => {
+    return Reminder.updateOne({ _id: data._id }, data);
 }
 
-const deleteById = async (data) =>{
-    return Sticky.findByIdAndDelete(data._id);
+const deleteById =(data) => {
+    return Reminder.findByIdAndDelete(data._id);
 }
 
 
-module.exports ={
+module.exports = {
     create,
-    findAllNotes,
-    findNoteById,
+    findAllReminders,
+    findReminderById,
     updateOne,
     deleteById
 }

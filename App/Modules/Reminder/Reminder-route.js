@@ -4,7 +4,7 @@ const { catchErrors } = require('../../Handlers/ErrorHandler');
 const { createReminder, updateReminder, deleteReminder, getReminders } = require('./Reminder-controller');
 const { authenticate } = require('../../Middlewares/Authenticate')
 
-router.post('/create', catchErrors(createReminder));
+router.post('/create', authenticate, catchErrors(createReminder));
 
 router.get('/', authenticate, catchErrors(getReminders));
 

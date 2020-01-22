@@ -20,16 +20,23 @@ app.use('/api/user', userRoutes);
 const noteRoutes = require('./App/Modules/Note/Note-route');
 app.use('/api/note', noteRoutes);
 
-app.use('/', (req,res,next) =>{
-    res.status(200).json({
-        message: "Welcome Developer.",
-    });
-});
+//reminder
+
+const reminderRoutes = require('./App/Modules/Reminder/Reminder-route');
+app.use('/api/reminder', reminderRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('The page you are looking for not found');
     error.status = 404;
     next(error);
 });
+
+app.use('', (req,res,next) =>{
+    res.status(200).json({
+        message: "Welcome Developer.",
+    });
+});
+
+
 
 module.exports = app;
