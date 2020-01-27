@@ -20,7 +20,7 @@ const login = async (req, res) => {
     }
 
     let token =  generateToken(user);
-    return Success(res, "Login Success", { jT: token });
+    return Success(res, "Login Success", { jT: token,user:user._id });
 
 }
 

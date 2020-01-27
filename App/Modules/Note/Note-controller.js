@@ -1,4 +1,4 @@
-const {  findNoteById,create,findAllNotes,updateOne,deleteById,addRemoveTrash,noteDone } = require('../../Services/Note/Note-service');
+const {  findNoteById,create,findAllNotes,updateOne,deleteById,addRemoveTrash,noteDone,findSharedNotes } = require('../../Services/Note/Note-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
 const { BadRequest,NotFound } = require('../../Helpers/Response/ClientErrors');
 const { isBadRequest } = require('../../Helpers/Data-Format/Format');
@@ -89,5 +89,11 @@ const checklist = async (req, res) => {
     return Success(res, 'Checklist is changed successfully', null);
 }
 
+const sharedNotes = async (req, res) => {
+    let user = req.user._id;
+    let notes = await findSharedNotes(user);
+    return Success(res,'All notes',notes);
+}
 
-module.exports = { createNote, getNotes,updateNote, deleteNote,trash,checklist }
+
+module.exports = { createNote, getNotes,updateNote, deleteNote,trash,checklist,sharedNotes }

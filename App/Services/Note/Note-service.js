@@ -34,6 +34,10 @@ const noteDone = async (note,data) =>{
     return Note.updateOne({_id:note._id},{checklists:checklist});
 }
 
+const findSharedNotes = async (user) =>{
+    return Note.find({'assignees.user':user}).populate('assignees.user')
+}
+
 module.exports ={
     create,
     findAllNotes,
@@ -41,5 +45,6 @@ module.exports ={
     deleteById,
     findNoteById,
     addRemoveTrash,
-    noteDone
+    noteDone,
+    findSharedNotes
 }

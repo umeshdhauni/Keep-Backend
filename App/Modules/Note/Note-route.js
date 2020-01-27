@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { catchErrors } = require('../../Handlers/ErrorHandler');
-const { createNote,getNotes,updateNote,deleteNote,trash,checklist } = require('./Note-controller')
+const { createNote,getNotes,updateNote,deleteNote,trash,checklist,sharedNotes } = require('./Note-controller')
 const {authenticate} = require('../../Middlewares/Authenticate');
 const multer = require('multer');
 
@@ -23,6 +23,8 @@ var upload = multer({
 router.post('/create', authenticate, upload, catchErrors(createNote));
 
 router.get('/', authenticate, catchErrors(getNotes));
+
+router.get('/shared', authenticate, catchErrors(sharedNotes));
 
 router.patch('/update/:_id', authenticate, upload, catchErrors(updateNote));
 
