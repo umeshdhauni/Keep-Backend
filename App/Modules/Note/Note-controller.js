@@ -8,10 +8,9 @@ const {fileUpload} = require('../../Helpers/Aws/file-upload')
 const createNote = async (req, res) => {
     let data = { ...req.body };
     let imageFile = req.file;
-    if(isBadRequest(['title'],data)){
-        return BadRequest(res,'Missing Data');
-    }
-
+    // if(isBadRequest(['title'],data)){
+    //     return BadRequest(res,'Missing Data');
+    // }
     if(imageFile){
         let isUpload = await fileUpload(imageFile);
         data.image = isUpload.Location;
