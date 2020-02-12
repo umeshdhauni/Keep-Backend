@@ -10,7 +10,7 @@ const noteSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default:'normal'
+        default: 'normal'
     },
     checklists: [
         {

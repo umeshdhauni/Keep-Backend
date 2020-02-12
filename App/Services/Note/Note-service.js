@@ -1,44 +1,43 @@
 const Note = require('../../Modules/Note/Note-model');
 
-const create = async (data) =>{
+const create = (data) => {
     return Note.create(data);
 }
 
-const findAllNotes = async (data) =>{
+const findAllNotes = (data) => {
     return Note.find(data).populate('assignees.user')
 }
 
-const findNoteById = async (id) =>{
+const findNoteById = (id) => {
     return Note.findById(id);
 }
 
-const updateOne = async (data) =>{
-    console.log(data)
-    return Note.findOneAndUpdate({_id:data._id},data);
+const updateOne = (data) => {
+    return Note.findOneAndUpdate({ _id: data._id }, data);
 }
 
-const deleteById = async (data) =>{
+const deleteById = (data) => {
     return Note.findByIdAndDelete(data._id);
 }
 
-const addRemoveTrash = async (id,val) =>{
-    return Note.updateOne({_id:id},{trash:val});
+const addRemoveTrash = (id, val) => {
+    return Note.updateOne({ _id: id }, { trash: val });
 }
 
-const noteDone = async (note,data) =>{
+const noteDone = (note, data) => {
     let checklist = note.checklists;
-    let index = checklist.findIndex(element =>{
+    let index = checklist.findIndex(element => {
         return element.index == data.index;
     });
     checklist[index].done = data.done;
-    return Note.updateOne({_id:note._id},{checklists:checklist});
+    return Note.updateOne({ _id: note._id }, { checklists: checklist });
 }
 
-const findSharedNotes = async (user) =>{
-    return Note.find({'assignees.user':user}).populate('assignees.user')
+const findSharedNotes = (user) => {
+    return Note.find({ 'assignees.user': user }).populate('assignees.user')
 }
 
-module.exports ={
+module.exports = {
     create,
     findAllNotes,
     updateOne,

@@ -1,9 +1,9 @@
-const {  findNoteById,create,findAllNotes,updateOne,deleteById,addRemoveTrash,noteDone,findSharedNotes } = require('../../Services/Note/Note-service');
+const { findNoteById, create, findAllNotes, updateOne, deleteById, addRemoveTrash, noteDone, findSharedNotes } = require('../../Services/Note/Note-service');
 const { Success, Created } = require('../../Helpers/Response/Success');
-const { BadRequest,NotFound } = require('../../Helpers/Response/ClientErrors');
+const { BadRequest, NotFound } = require('../../Helpers/Response/ClientErrors');
 const { isBadRequest } = require('../../Helpers/Data-Format/Format');
 
-const {fileUpload} = require('../../Helpers/Aws/file-upload')
+const { fileUpload } = require('../../Helpers/Aws/file-upload')
 
 const createNote = async (req, res) => {
     let data = { ...req.body };
@@ -11,11 +11,11 @@ const createNote = async (req, res) => {
     // if(isBadRequest(['title'],data)){
     //     return BadRequest(res,'Missing Data');
     // }
-    if(imageFile){
+    if (imageFile) {
         let isUpload = await fileUpload(imageFile);
         data.image = isUpload.Location;
     }
-    if(data.checklists){
+    if (data.checklists) {
         data.checklists = JSON.parse(data.checklists)
     }
     data.user = req.user._id;
@@ -27,22 +27,22 @@ const getNotes = async (req, res) => {
     let data = { ...req.query };
     data.user = req.user._id;
     let notes = await findAllNotes(data);
-    return Success(res,'All notes',notes);
+    return Success(res, 'All notes', notes);
 }
 
 const updateNote = async (req, res) => {
-    let data = { ...req.body,...req.params };
+    let data = { ...req.body, ...req.params };
     let imageFile = req.file;
-    if(imageFile){
+    if (imageFile) {
         let isUpload = await fileUpload(imageFile);
         data.image = isUpload.Location;
     }
     let note = await findNoteById(data._id);
-    if(!note){
-        return NotFound(res,'Note not found');
+    if (!note) {
+        return NotFound(res, 'Note not found');
     }
-    for(let key of Object.keys(data)){
-        if(key == 'checklists' || key == 'dueDate' || key == 'assignees'){
+    for (let key of Object.keys(data)) {
+        if (key == 'checklists' || key == 'dueDate' || key == 'assignees') {
             data[key] = JSON.parse(data[key]);
         }
     }
@@ -53,10 +53,10 @@ const updateNote = async (req, res) => {
 
 const deleteNote = async (req, res) => {
     let data = { ...req.params };
-    
+
     let note = await findNoteById(data._id);
-    if(!note){
-        return NotFound(res,'Note not found');
+    if (!note) {
+        return NotFound(res, 'Note not found');
     }
 
     await deleteById(data);
@@ -64,35 +64,35 @@ const deleteNote = async (req, res) => {
 }
 
 const trash = async (req, res) => {
-    let data = { ...req.params,...req.body };
-    
+    let data = { ...req.params, ...req.body };
+
     let note = await findNoteById(data._id);
-    if(!note){
-        return NotFound(res,'Note not found');
+    if (!note) {
+        return NotFound(res, 'Note not found');
     }
 
-    await addRemoveTrash(data._id,data.trash);
+    await addRemoveTrash(data._id, data.trash);
     return Success(res, 'Note is deleted successfully', null);
 }
 
 
 const checklist = async (req, res) => {
-    let data = { ...req.params,...req.body };
-    
+    let data = { ...req.params, ...req.body };
+
     let note = await findNoteById(data._id);
-    if(!note){
-        return NotFound(res,'Note not found');
+    if (!note) {
+        return NotFound(res, 'Note not found');
     }
 
-    await noteDone(note,data);
+    await noteDone(note, data);
     return Success(res, 'Checklist is changed successfully', null);
 }
 
 const sharedNotes = async (req, res) => {
     let user = req.user._id;
     let notes = await findSharedNotes(user);
-    return Success(res,'All notes',notes);
+    return Success(res, 'All notes', notes);
 }
 
 
-module.exports = { createNote, getNotes,updateNote, deleteNote,trash,checklist,sharedNotes }
+module.exports = { createNote, getNotes, updateNote, deleteNote, trash, checklist, sharedNotes }
